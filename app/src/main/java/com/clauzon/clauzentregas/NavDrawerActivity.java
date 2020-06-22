@@ -15,6 +15,7 @@ import com.clauzon.clauzentregas.Clases.Notificacion;
 import com.clauzon.clauzentregas.Clases.Pedidos;
 import com.clauzon.clauzentregas.Clases.Repartidor;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -26,6 +27,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -44,6 +49,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -70,16 +76,7 @@ public class NavDrawerActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         currentUser = mAuth.getCurrentUser();
-//        startService(new Intent(this,MyService.class));
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
+        recuperar_token_dispositivo();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -98,6 +95,25 @@ public class NavDrawerActivity extends AppCompatActivity {
         txt_correo = (TextView) headerView.findViewById(R.id.correo_repartidor);
         comprueba_estado();
         ShowNotification();
+    }
+
+    private void recuperar_token_dispositivo() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        DatabaseReference reference= database.getReference().child("token");
+                        reference.child(currentUser.getUid()).setValue(token);
+
+                    }
+                });
+
     }
 
 
