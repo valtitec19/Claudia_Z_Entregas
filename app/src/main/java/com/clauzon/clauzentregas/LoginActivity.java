@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.clauzon.clauzentregas.Clases.Repartidor;
 import com.clauzon.clauzentregas.Clases.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText txt_correo,txt_pass;
@@ -136,13 +139,12 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
         }else {
-            Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }
     }
     private boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
-
 
 
     private Boolean validarPass(){
@@ -151,5 +153,42 @@ public class LoginActivity extends AppCompatActivity {
         if(pass1.length()>6&&pass1.length()<20){
             return true;
         }else{return false;}
+    }
+
+
+    public void olvide_password(View view) {
+        if(isValidEmail(txt_correo.getText().toString())){
+            databaseReference.child("Repartidores").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot ds : snapshot.getChildren()){
+                        Usuario usuario = ds.getValue(Usuario.class);
+                        if(usuario.getCorreo().equals(txt_correo.getText().toString())){
+                            mAuth.sendPasswordResetEmail(txt_correo.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(LoginActivity.this, "Se envío un enlace para restablecer tu contraseña al correo que registraste.", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        Toast.makeText(LoginActivity.this, "El correo no exite", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }else {
+                            Toast.makeText(LoginActivity.this, "El correo no existe", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else {
+
+            txt_correo.setError("Ingrese un correo valido");
+        }
     }
 }

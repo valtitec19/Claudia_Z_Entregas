@@ -1,5 +1,6 @@
 package com.clauzon.clauzentregas;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,9 +28,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clauzon.clauzentregas.Clases.Repartidor;
+import com.clauzon.clauzentregas.Clases.Usuario;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -143,7 +149,47 @@ public class RegistroActivity extends AppCompatActivity {
 
     }
 
+    private void correo_existente(final String correo_test){
+
+        DatabaseReference reference = database.getReference();
+        reference.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Usuario usuario = ds.getValue(Usuario.class);
+                    if(usuario.getCorreo().equals(correo_test)){
+                        Toast.makeText(RegistroActivity.this, "El correo que ingresó se encuentra asociado a otra cuenta", Toast.LENGTH_SHORT).show();
+                        txt_correo.setError("Correo existente");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        reference.child("Repartidores").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    Repartidor repartidor = ds.getValue(Repartidor.class);
+                    if(repartidor.getCorreo().equals(correo_test)){
+                        Toast.makeText(RegistroActivity.this, "El correo que ingresó se encuentra asociado a una cuenta de cliente", Toast.LENGTH_SHORT).show();}
+                    txt_correo.setError("Correo existente");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     private boolean isValidEmail(CharSequence target) {
+        correo_existente(txt_correo.getText().toString());
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
