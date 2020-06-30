@@ -22,6 +22,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -66,6 +67,7 @@ public class NavDrawerActivity extends AppCompatActivity {
     private Boolean aux;
     private Pedidos pedidos;
     private PendingIntent pendingIntent;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +75,12 @@ public class NavDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nav_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         currentUser = mAuth.getCurrentUser();
         recuperar_token_dispositivo();
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -117,6 +120,8 @@ public class NavDrawerActivity extends AppCompatActivity {
     }
 
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -131,6 +136,8 @@ public class NavDrawerActivity extends AppCompatActivity {
         if (i == R.id.action_settings){
             startActivity(new Intent(this, RutasActivity.class));
             finish();
+        }else if(i == 16908332){
+            drawer.openDrawer(GravityCompat.START);
         }
 
         return true;
