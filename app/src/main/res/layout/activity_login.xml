@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/colorAccent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,32 +23,55 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:text="¡Bienvenido!"
-                    android:textSize="40dp"
+                    android:text="Claudia Z Socios"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center"
-                    android:paddingTop="15dp"/>
+                    android:padding="15dp"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/claudia"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Correo electrónico"
-                    android:padding="10dp">
+                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/white"
+                    android:background="@drawable/edit_text_style">
                     <EditText
+                        android:textColor="@color/white"
+                        android:padding="15dp"
                         android:singleLine="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/correo_login" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"/>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Contraseña"
-                    android:padding="10dp">
+                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/white"
+                    android:background="@drawable/edit_text_style">
                     <EditText
+                        android:textColor="@color/white"
+                        android:padding="15dp"
                         android:inputType="textPassword"
                         android:singleLine="true"
                         android:layout_width="match_parent"
@@ -55,22 +79,33 @@
                         android:id="@+id/pass_login" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"/>
+
                 <LinearLayout
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
+                        android:textStyle="italic"
                         android:onClick="olvide_password"
-                        android:textColor="@color/azul_click"
+                        android:textColor="@color/white"
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="25sp"
                         android:text="Olvidé mi contraseña"/>
                 </LinearLayout>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"/>
 
                 <Button
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:background="@drawable/botones"
                     android:onClick="iniciar_sesion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,7 +116,13 @@
 
 
             </LinearLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
             <Button
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:background="@drawable/botones"
                 android:onClick="registro"
                 android:padding="15dp"
                 android:layout_width="wrap_content"

@@ -10,38 +10,38 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/claudia"
         android:label="@string/app_name"
         android:roundIcon="@drawable/claudia"
-        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:targetApi="m">
-
+        <activity android:name=".EditarDatosActivity"></activity>
 
         <service
-            android:name="com.clauzon.clauzentregas.Servicios.FCM"
+            android:name=".Servicios.FCM"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name="com.clauzon.clauzentregas.AvisoPrivacidadActivity" />
-        <activity android:name="com.clauzon.clauzentregas.FinalizarPedido" />
-        <activity android:name="com.clauzon.clauzentregas.UtilidadesActivity" />
-        <activity android:name="com.clauzon.clauzentregas.ConfirmarRegistroActivity" />
-        <activity android:name="com.clauzon.clauzentregas.LineasActivity" />
+        <activity android:name=".AvisoPrivacidadActivity" />
+        <activity android:name=".FinalizarPedido" />
+        <activity android:name=".UtilidadesActivity" />
+        <activity android:name=".ConfirmarRegistroActivity" />
+        <activity android:name=".LineasActivity" />
         <activity
-            android:name="com.clauzon.clauzentregas.ActivacionActivity"
+            android:name=".ActivacionActivity"
             android:theme="@style/Normal" />
         <activity
-            android:name="com.clauzon.clauzentregas.NavDrawerActivity"
+            android:name=".NavDrawerActivity"
             android:label="@string/title_activity_nav_drawer"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -56,15 +56,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.clauzon.clauzentregas.LoginActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.clauzon.clauzentregas.RegistroActivity" />
-        <activity android:name="com.clauzon.clauzentregas.MainActivity">
+        <activity android:name=".RegistroActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,9 +74,11 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.clauzon.clauzentregas.RutasActivity"
+        <activity
+            android:name=".RutasActivity"
             android:theme="@style/NoBar" />
-        <activity android:name="com.clauzon.clauzentregas.VerRutaActivity"
+        <activity
+            android:name=".VerRutaActivity"
             android:theme="@style/NoBar" />
     </application>
 

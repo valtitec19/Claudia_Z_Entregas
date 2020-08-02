@@ -124,7 +124,7 @@ public class RegistroActivity extends AppCompatActivity {
                                     });
                                     builder.create().show();
                                 } else {
-                                    repartidor = new Repartidor(nombre, apellido, email, telefono, "", direccion, "", "", false, entregas, cobertura,imagenes,numero_tarjeta);
+                                    repartidor = new Repartidor(nombre, apellido, email, telefono, "", direccion, "", "", false, entregas, cobertura,imagenes,numero_tarjeta,"");
                                     Intent i = new Intent(RegistroActivity.this, ConfirmarRegistroActivity.class);
                                     i.putExtra("repartidor", repartidor);
                                     i.putExtra("pass",txt_pass.getText().toString());
@@ -281,7 +281,7 @@ public class RegistroActivity extends AppCompatActivity {
                     showPictureDialog();
                 }else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegistroActivity.this);
-                    builder.setTitle("Datos incompletos").setMessage("Por favor cargue una foto de perfil primero");
+                    builder.setTitle("Datos incompletos").setMessage("Haz click sobre el rostro sonriente para subir una foto de perfil");
                     builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -380,7 +380,7 @@ public class RegistroActivity extends AppCompatActivity {
                 progressDialog.setCancelable(false);
                 progressDialog.show();
                 Uri contentURI = data.getData();
-                storageReference = firebaseStorage.getReference("IMAGENES CATALOGO PRODUCTOS");
+                storageReference = firebaseStorage.getReference("IMAGENES REPARTIDORES");
                 final StorageReference foto_subida = storageReference.child(contentURI.getLastPathSegment());
                 foto_subida.putFile(contentURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

@@ -8,4 +8,6 @@
     <color name="gris">#6F6F6F</color>
     <color name="black">#000000</color>
     <color name="azul_click">#00A9F8</color>
+    <color name="azul">#0084C0</color>
+    <color name="transparente">#000084C0</color>
 </resources>

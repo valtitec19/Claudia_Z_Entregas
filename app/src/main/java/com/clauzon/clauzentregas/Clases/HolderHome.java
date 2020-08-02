@@ -17,7 +17,6 @@ public class HolderHome extends RecyclerView.ViewHolder{
     public HolderHome(@NonNull View itemView) {
         super(itemView);
         nombre_item = (TextView) itemView.findViewById(R.id.nombre_item);
-        nombre_item.setSelected(true);
         precio_venta = (TextView) itemView.findViewById(R.id.precio_venta);
         categoria=(TextView)itemView.findViewById(R.id.categoria_item);
         descripcion=(TextView)itemView.findViewById(R.id.descripcion_item);
@@ -25,7 +24,13 @@ public class HolderHome extends RecyclerView.ViewHolder{
         estado=(TextView)itemView.findViewById(R.id.estado_del_item_);
         cantidad_item=(TextView)itemView.findViewById(R.id.cantidad_de_items);
         estado2=(TextView)itemView.findViewById(R.id.estado_del_item_2);
-
+        nombre_item.setSelected(true);
+        precio_venta.setSelected(true);
+        categoria.setSelected(true);
+        estado.setSelected(true);
+        cantidad_item.setSelected(true);
+        estado2.setSelected(true);
+        descripcion.setSelected(true);
     }
 
     public TextView getNombre_item() {

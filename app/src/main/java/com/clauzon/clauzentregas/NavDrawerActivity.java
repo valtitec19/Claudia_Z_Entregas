@@ -9,6 +9,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clauzon.clauzentregas.Clases.Notificacion;
@@ -28,6 +32,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.clauzon.clauzentregas.Clases.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -51,6 +56,12 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -79,7 +90,9 @@ public class NavDrawerActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         currentUser = mAuth.getCurrentUser();
-        recuperar_token_dispositivo();
+        try {
+            recuperar_token_dispositivo();
+        }catch (Exception e){}
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -111,8 +124,8 @@ public class NavDrawerActivity extends AppCompatActivity {
                         }
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        DatabaseReference reference= database.getReference().child("token");
-                        reference.child(currentUser.getUid()).setValue(token);
+                        DatabaseReference reference= database.getReference().child("Repartidores/"+currentUser.getUid()).child("token");
+                        reference.setValue(token);
 
                     }
                 });
@@ -138,9 +151,83 @@ public class NavDrawerActivity extends AppCompatActivity {
             finish();
         }else if(i == 16908332){
             drawer.openDrawer(GravityCompat.START);
+        }else if(i == R.id.recordatorio){
+           DatabaseReference reference =database.getReference("Pedidos");
+           reference.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                   for(DataSnapshot da  : snapshot.getChildren()){
+                       final Pedidos pedidos = da.getValue(Pedidos.class);
+                       if(pedidos.getRepartidor_id().equals(currentUser.getUid())){
+                           DatabaseReference reference1=database.getReference("Usuarios");
+                           reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                               @Override
+                               public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                   for (DataSnapshot ds : snapshot.getChildren()){
+                                       Usuario usuario = ds.getValue(Usuario.class);
+                                       if(pedidos.getUsuario_id().equals(usuario.getId())){
+                                           Log.e("Notificacion para ", usuario.getNombre() );
+                                           enviar_recordatorio(usuario.getToken(),"Tienes una entrega proxima",pedidos.getDireccion_entrega()+" "+pedidos.getDescripcion(),pedidos.getFoto());
+                                       }
+                                   }
+                               }
+
+                               @Override
+                               public void onCancelled(@NonNull DatabaseError error) {
+
+                               }
+                           });
+                       }
+                   }
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError error) {
+
+               }
+           });
         }
 
         return true;
+    }
+
+    private void enviar_recordatorio(String token,String titulo, String detalle,String imagen) {
+        RequestQueue mRequestQue = Volley.newRequestQueue(this);
+
+        JSONObject json = new JSONObject();
+        try {
+
+            json.put("to", token);
+
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("titulo", titulo);
+            notificationObj.put("detalle", detalle);
+            notificationObj.put("imagen",imagen);
+
+
+
+            //replace notification with data when went send data
+            json.put("data", notificationObj);
+
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    json,null,null) {
+
+
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAAE3HNDFU:APA91bEmPKbwtdaQIrU9g2GmxBEwy7zqHzdwG-L3I7o6HzrKhJ5BupTBTqhN67ytbObOv_NUILcDMaG-HwCLi2tEFKDwOWShs14ZOGpWZOh2DJNhxwjAQIfPtWgn7sxWuDR9VfT4uPQW");
+                    return header;
+                }
+            };
+
+
+            mRequestQue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -13,11 +13,33 @@ public class Pedidos implements Serializable {
     private String hora_entrega,nombre,foto,descripcion,id;
     private float costo_envio;
     private String fecha;
+    private String id_compra;
+    private int tarjeta;
+    private String color,tamano,modelo;
 
     public Pedidos() {
     }
 
-    public Pedidos(String producto_id, String estado, int cantidad, float costo, String usuario_id, String repartidor_id, String direccion_entrega, String hora_entrega, String nombre, String foto, String descripcion, String id, float costo_envio,String fecha) {
+//    public Pedidos(String producto_id, String estado, int cantidad, float costo, String usuario_id, String repartidor_id, String direccion_entrega, String hora_entrega, String nombre, String foto, String descripcion, String id, float costo_envio, String fecha, String id_compra, int tarjeta) {
+//        this.producto_id = producto_id;
+//        this.estado = estado;
+//        this.cantidad = cantidad;
+//        this.costo = costo;
+//        this.usuario_id = usuario_id;
+//        this.repartidor_id = repartidor_id;
+//        this.direccion_entrega = direccion_entrega;
+//        this.hora_entrega = hora_entrega;
+//        this.nombre = nombre;
+//        this.foto = foto;
+//        this.descripcion = descripcion;
+//        this.id = id;
+//        this.costo_envio = costo_envio;
+//        this.fecha = fecha;
+//        this.id_compra = id_compra;
+//        this.tarjeta = tarjeta;
+//    }
+
+    public Pedidos(String producto_id, String estado, int cantidad, float costo, String usuario_id, String repartidor_id, String direccion_entrega, String hora_entrega, String nombre, String foto, String descripcion, String id, float costo_envio, String fecha, String id_compra, int tarjeta, String color, String tamano, String modelo) {
         this.producto_id = producto_id;
         this.estado = estado;
         this.cantidad = cantidad;
@@ -30,8 +52,13 @@ public class Pedidos implements Serializable {
         this.foto = foto;
         this.descripcion = descripcion;
         this.id = id;
-        this.costo_envio=costo_envio;
-        this.fecha=fecha;
+        this.costo_envio = costo_envio;
+        this.fecha = fecha;
+        this.id_compra = id_compra;
+        this.tarjeta = tarjeta;
+        this.color = color;
+        this.tamano = tamano;
+        this.modelo = modelo;
     }
 
     public String getProducto_id() {
@@ -144,5 +171,45 @@ public class Pedidos implements Serializable {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public String getId_compra() {
+        return id_compra;
+    }
+
+    public void setId_compra(String id_compra) {
+        this.id_compra = id_compra;
+    }
+
+    public int getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(int tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(String tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 }

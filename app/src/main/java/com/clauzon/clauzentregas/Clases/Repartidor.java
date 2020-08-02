@@ -11,12 +11,13 @@ public class Repartidor implements Serializable {
     private List<String> cobertura=new ArrayList<>();
     private List<String> imagenes=new ArrayList<>();
     private String tarjeta;
+    private String token;
 
     public Repartidor() {
     }
 
     public Repartidor(String nombre, String apellidos, String correo, String telefono, String id, String direccion, String horario_inicio, String horario_fin, Boolean estado
-            , List<String> entregas, List<String> cobertura,List<String> imagenes,String tarjeta) {
+            , List<String> entregas, List<String> cobertura,List<String> imagenes,String tarjeta,String token) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correo = correo;
@@ -30,6 +31,7 @@ public class Repartidor implements Serializable {
         this.cobertura = cobertura;
         this.imagenes=imagenes;
         this.tarjeta=tarjeta;
+        this.token=token;
     }
 
     public String getNombre() {
@@ -134,5 +136,13 @@ public class Repartidor implements Serializable {
 
     public void setTarjeta(String tarjeta) {
         this.tarjeta = tarjeta;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

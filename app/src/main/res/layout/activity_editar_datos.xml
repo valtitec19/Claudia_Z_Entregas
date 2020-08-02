@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/colorAccent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditarDatosActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <LinearLayout
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="15dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/foto_perfil"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_baseline_add_a_photo_24" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="20dp"
+                android:text="Información Personal"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Nombre"
+                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/white"
+                    android:background="@drawable/edit_text_style">
+
+                    <EditText
+                        android:id="@+id/nombre_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:textColor="@color/white"
+                        android:padding="15dp"
+                        android:textCursorDrawable="@drawable/color_cursor"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Apellido"
+                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/white"
+                    android:background="@drawable/edit_text_style">>
+
+                    <EditText
+                        android:id="@+id/apellido_perfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/white"
+                        android:padding="15dp"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/color_cursor"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Numero de celular"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white"
+                android:background="@drawable/edit_text_style">>
+
+                <EditText
+                    android:id="@+id/telefono_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="false"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/white"
+                    android:padding="15dp"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/color_cursor"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Dirección de correo electrónico"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white"
+                android:background="@drawable/edit_text_style">
+
+                <EditText
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:id="@+id/correo_perfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="false"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:padding="15dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+            <TextView
+                android:onClick="terminos_condiciones"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/azul_click"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="Politicas de Privacidad"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/acepar_edit"
+        android:onClick="acepar_perfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/botones"
+        android:text="Continuar"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

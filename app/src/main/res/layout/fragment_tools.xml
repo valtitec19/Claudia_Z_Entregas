@@ -1,64 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/colorAccent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
-        <TextView
-            android:textColor="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Configuración"
-            android:textSize="28dp"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:padding="5dp"
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.legacy.widget.Space
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
-
-<!--        <Button-->
-<!--            android:id="@+id/notificacion"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="notificacion"/>-->
-
-        <Button
-            android:textSize="20dp"
-            android:padding="15dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Editar datos"
-            android:gravity="left"
-            android:id="@+id/editar_datos"
-            android:background="@color/white"/>
-        <androidx.legacy.widget.Space
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:padding="35dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/foto_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_launcher_round"/>
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:id="@+id/user_name"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nombre con apellidos"/>
+            </LinearLayout>
 
 
-        <Button
-            android:textSize="20dp"
-            android:padding="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cerrar sesión"
-            android:gravity="left"
-            android:id="@+id/boton_cerrar_sesion"
-            android:background="@color/white"/>
+            <LinearLayout
+                android:padding="25dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    </LinearLayout>
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+                <Button
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"
+                    android:padding="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Editar datos"
+                    android:gravity="left"
+                    android:id="@+id/editar_datos"
+                    android:background="@drawable/edit_text_style_2"/>
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+
+                <Button
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textSize="20dp"
+                    android:padding="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar sesión"
+                    android:gravity="left"
+                    android:id="@+id/boton_cerrar_sesion"
+                    android:background="@drawable/edit_text_style_2"/>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"/>
+
+            <LinearLayout
+                android:padding="15dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imagen_claudia_logo"
+                    android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
