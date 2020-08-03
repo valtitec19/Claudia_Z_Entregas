@@ -123,73 +123,73 @@ public class AdapterRuta extends RecyclerView.Adapter<RutaHolder> implements Vie
             }
         });
 
-        String temp=String.valueOf(list.get(position).getEstaciones().get(0).getHora());
-        String temp2=String.valueOf(list.get(position).getEstaciones().get(pos_final).getHora());
-        String parts[]=temp.split(":");
-        String parts2[]=temp2.split(":");
-        String minutos1=parts[1].substring(0,2);
-        String minutos2=parts2[1].substring(0,2);
-        String horario=parts[1].substring(2,4);
-        String horario2=parts2[1].substring(2,4);
-        Log.e("Horario1 ", horario );
-        Log.e("Horario2 ", horario2 );
-
-        if(horario.equals("am") && horario2.equals("am")){
-            //AMBOS AM
-            if(Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]) >=0){
-                //HORAS 2 MMAYOR A HORAS 1
-                if(Integer.parseInt(minutos2)-Integer.parseInt(minutos1)>=0){
-                    //MINUTOS 2 MAYOR A MINUTOS 1
-                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1));
-                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]);
-                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
-                }else {
-                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1))+60;
-                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0])-1;
-                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
-                }
-            }else {
-                holder.getTiempo_recorrido().setText("Ruta incongruente");
-            }
-
-
-        }else if(horario.equals("am") && horario2.equals("pm")){
-            //AM PM
-            if(Integer.parseInt(parts2[0])<Integer.parseInt(parts[0])){
-                if(Integer.parseInt(minutos2)-Integer.parseInt(minutos1)>=0){
-                    //MINUTOS 2 MAYOR A MINUTOS 1
-                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1));
-                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]);
-                    holder.getTiempo_recorrido().setText(horas+12+" horas, "+min+" minutos");
-                }else {
-                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1))+60;
-                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0])-1;
-                    holder.getTiempo_recorrido().setText(horas+12+" horas, "+min+" minutos");
-                }
-            }else {
-                holder.getTiempo_recorrido().setText("Ruta incongruente");
-            }
-        }else if(horario.equals("pm") && horario2.equals("pm")){
-            //PM PM
-            if(Integer.parseInt(parts2[0])>=Integer.parseInt(parts[0])){
-                //HORAS 2 MMAYOR A HORAS 1
-                if(Integer.parseInt(minutos2)-Integer.parseInt(minutos1)>=0){
-                    //MINUTOS 2 MAYOR A MINUTOS 1
-                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1));
-                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]);
-                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
-                }else {
-                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1))+60;
-                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0])-1;
-                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
-                }
-            }else {
-                holder.getTiempo_recorrido().setText("Ruta incongruente");
-            }
-        }else {
-            holder.getTiempo_recorrido().setText("Ruta incongruente");
-            //SIN SENTIDO
-        }
+//        String temp=String.valueOf(list.get(position).getEstaciones().get(0).getHora());
+//        String temp2=String.valueOf(list.get(position).getEstaciones().get(pos_final).getHora());
+//        String parts[]=temp.split(":");
+//        String parts2[]=temp2.split(":");
+//        String minutos1=parts[1].substring(0,2);
+//        String minutos2=parts2[1].substring(0,2);
+//        String horario=parts[1].substring(2,4);
+//        String horario2=parts2[1].substring(2,4);
+//        Log.e("Horario1 ", horario );
+//        Log.e("Horario2 ", horario2 );
+//
+//        if(horario.equals("am") && horario2.equals("am")){
+//            //AMBOS AM
+//            if(Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]) >=0){
+//                //HORAS 2 MMAYOR A HORAS 1
+//                if(Integer.parseInt(minutos2)-Integer.parseInt(minutos1)>=0){
+//                    //MINUTOS 2 MAYOR A MINUTOS 1
+//                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1));
+//                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]);
+//                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
+//                }else {
+//                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1))+60;
+//                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0])-1;
+//                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
+//                }
+//            }else {
+//                holder.getTiempo_recorrido().setText("Ruta incongruente");
+//            }
+//
+//
+//        }else if(horario.equals("am") && horario2.equals("pm")){
+//            //AM PM
+//            if(Integer.parseInt(parts2[0])<Integer.parseInt(parts[0])){
+//                if(Integer.parseInt(minutos2)-Integer.parseInt(minutos1)>=0){
+//                    //MINUTOS 2 MAYOR A MINUTOS 1
+//                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1));
+//                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]);
+//                    holder.getTiempo_recorrido().setText(horas+12+" horas, "+min+" minutos");
+//                }else {
+//                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1))+60;
+//                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0])-1;
+//                    holder.getTiempo_recorrido().setText(horas+12+" horas, "+min+" minutos");
+//                }
+//            }else {
+//                holder.getTiempo_recorrido().setText("Ruta incongruente");
+//            }
+//        }else if(horario.equals("pm") && horario2.equals("pm")){
+//            //PM PM
+//            if(Integer.parseInt(parts2[0])>=Integer.parseInt(parts[0])){
+//                //HORAS 2 MMAYOR A HORAS 1
+//                if(Integer.parseInt(minutos2)-Integer.parseInt(minutos1)>=0){
+//                    //MINUTOS 2 MAYOR A MINUTOS 1
+//                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1));
+//                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0]);
+//                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
+//                }else {
+//                    int min=(Integer.parseInt(minutos2)-Integer.parseInt(minutos1))+60;
+//                    int horas=Integer.parseInt(parts2[0])-Integer.parseInt(parts[0])-1;
+//                    holder.getTiempo_recorrido().setText(horas+" horas, "+min+" minutos");
+//                }
+//            }else {
+//                holder.getTiempo_recorrido().setText("Ruta incongruente");
+//            }
+//        }else {
+//            holder.getTiempo_recorrido().setText("Ruta incongruente");
+//            //SIN SENTIDO
+//        }
 
     }
 

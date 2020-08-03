@@ -8,6 +8,20 @@
     android:layout_height="match_parent"
     tools:context="RutasActivity">
 
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/claudia_z" />
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progress_circular_rutas"
         android:visibility="visible"
@@ -20,13 +34,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/toolbar_rutas"-->
+<!--            android:background="@color/colorPrimary"-->
+<!--            app:title="Rutas"-->
+<!--            app:titleTextColor="@color/white"/>-->
+
+
+        <RelativeLayout
+            android:id="@+id/Relative_toolbar_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar_rutas"
-            android:background="@color/colorPrimary"
-            app:title="Rutas"
-            app:titleTextColor="@color/white"/>
+            android:layout_height="wrap_content">
+            <include layout="@layout/toolbar"/>
+        </RelativeLayout>
+
 
         <Spinner
             android:layout_width="match_parent"

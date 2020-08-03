@@ -14,6 +14,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clauzon.clauzentregas.Clases.Pedidos;
@@ -25,6 +29,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FinalizarPedido extends AppCompatActivity {
     private FirebaseDatabase database;
@@ -145,6 +155,19 @@ public class FinalizarPedido extends AppCompatActivity {
                     recibido.setEstado("Cancelado");
                     DatabaseReference databaseReference1=database.getReference("Pedidos/"+recibido.getId());
                     databaseReference1.setValue(recibido);
+                    DatabaseReference reference=database.getReference("Usuarios/"+recibido.getUsuario_id());
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Usuario usuario = snapshot.getValue(Usuario.class);
+                            enviar_recordatorio(usuario.getToken(),"Pedido cancelado",recibido.getNombre()+" ponte en contacto a traves de nuestras redes sociales ",recibido.getFoto());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                     startActivity(new Intent(FinalizarPedido.this,NavDrawerActivity.class));
                     finish();
                 }
@@ -167,6 +190,19 @@ public class FinalizarPedido extends AppCompatActivity {
                     DatabaseReference databaseReference1=database.getReference("Pedidos/"+recibido.getId());
                     databaseReference1.setValue(recibido);
                     Toast.makeText(FinalizarPedido.this, "Felicidades por una entrega exitosa!", Toast.LENGTH_SHORT).show();
+                    DatabaseReference reference=database.getReference("Usuarios/"+recibido.getUsuario_id());
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Usuario usuario = snapshot.getValue(Usuario.class);
+                            enviar_recordatorio(usuario.getToken(),"Paquete entregado",recibido.getNombre(),recibido.getFoto());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                     Intent intent = new Intent(FinalizarPedido.this, NavDrawerActivity.class);
                     startActivity(intent);
                     finish();
@@ -183,6 +219,45 @@ public class FinalizarPedido extends AppCompatActivity {
         }else if(pendiente.isChecked()){
             startActivity(new Intent(FinalizarPedido.this,NavDrawerActivity.class));
             finish();
+        }
+    }
+
+    private void enviar_recordatorio(String token,String titulo, String detalle,String imagen) {
+        RequestQueue mRequestQue = Volley.newRequestQueue(this);
+
+        JSONObject json = new JSONObject();
+        try {
+
+            json.put("to", token);
+
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("titulo", titulo);
+            notificationObj.put("detalle", detalle);
+            notificationObj.put("imagen",imagen);
+
+
+
+            //replace notification with data when went send data
+            json.put("data", notificationObj);
+
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    json,null,null) {
+
+
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAAE3HNDFU:APA91bEmPKbwtdaQIrU9g2GmxBEwy7zqHzdwG-L3I7o6HzrKhJ5BupTBTqhN67ytbObOv_NUILcDMaG-HwCLi2tEFKDwOWShs14ZOGpWZOh2DJNhxwjAQIfPtWgn7sxWuDR9VfT4uPQW");
+                    return header;
+                }
+            };
+
+
+            mRequestQue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

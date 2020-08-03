@@ -166,8 +166,11 @@ public class NavDrawerActivity extends AppCompatActivity {
                                    for (DataSnapshot ds : snapshot.getChildren()){
                                        Usuario usuario = ds.getValue(Usuario.class);
                                        if(pedidos.getUsuario_id().equals(usuario.getId())){
-                                           Log.e("Notificacion para ", usuario.getNombre() );
-                                           enviar_recordatorio(usuario.getToken(),"Tienes una entrega proxima",pedidos.getDireccion_entrega()+" "+pedidos.getDescripcion(),pedidos.getFoto());
+
+                                           if(pedidos.getEstado().equals("Pago pendiente (En efectivo)") || pedidos.getEstado().equals("Pagado")){
+                                               Log.e("Estado ", "Detectado" );
+                                               enviar_recordatorio(usuario.getToken(),"Tienes una entrega proxima",pedidos.getDireccion_entrega()+" "+pedidos.getDescripcion(),pedidos.getFoto());
+                                           }
                                        }
                                    }
                                }

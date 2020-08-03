@@ -2,6 +2,7 @@ package com.clauzon.clauzentregas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,7 +42,8 @@ public class RutasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rutas);
-        toolbar = (Toolbar) findViewById(R.id.toolbar_rutas);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.setSupportActionBar(toolbar);
 //        setSupportActionBar(toolbar);
         firebaseON();
         inicio_spinner();
@@ -128,5 +130,12 @@ public class RutasActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(this,NavDrawerActivity.class));
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
 }
