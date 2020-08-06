@@ -8,6 +8,13 @@
     android:layout_height="match_parent"
     tools:context=".ActivacionActivity">
 
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/Relative_toolbar_home"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <include layout="@layout/toolbar"/>-->
+<!--    </RelativeLayout>-->
+
     <LinearLayout
         android:gravity="center"
         android:layout_gravity="center"

@@ -23,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +52,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -77,9 +79,10 @@ public class RegistroActivity extends AppCompatActivity {
     private String email, password, nombre, apellido, telefono, d, m, a, fecha, genero, id, hora_inicio, hora_fin, direccion;
     private List<String> entregas = new ArrayList<>();
     private List<String> cobertura = new ArrayList<>();
-    private ImageView ine_frontal,ine_trasera;
-    private ArrayList<String> imagenes =new ArrayList<>();
-    private int foto=0;
+    private ImageView ine_frontal, ine_trasera;
+    private ArrayList<String> imagenes = new ArrayList<>();
+    private int foto = 0;
+    private TextView terminos_y_licencia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +92,15 @@ public class RegistroActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+        imagenes.add("");
+        imagenes.add("");
+        imagenes.add("");
         //Inicio_Spinners();
         inicio_views();
         registrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                numero_tarjeta=tarjeta.getText().toString();
+                numero_tarjeta = tarjeta.getText().toString();
                 telefono = txt_celular.getText().toString();
                 apellido = txt_apellido.getText().toString();
                 nombre = txt_nombre.getText().toString();
@@ -105,7 +111,7 @@ public class RegistroActivity extends AppCompatActivity {
                     if (validarPass()) {
                         if (!nombre.isEmpty() && !apellido.isEmpty() && valida_numero(telefono)) {
                             if (checkBox.isChecked()) {
-                                if (url_foto.isEmpty() ) {
+                                if (url_foto.isEmpty()) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegistroActivity.this);
                                     builder.setTitle("Datos incompletos").setMessage("Por favor cargue una foto de perfil");
                                     builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
@@ -124,10 +130,10 @@ public class RegistroActivity extends AppCompatActivity {
                                     });
                                     builder.create().show();
                                 } else {
-                                    repartidor = new Repartidor(nombre, apellido, email, telefono, "", direccion, "", "", false, entregas, cobertura,imagenes,numero_tarjeta,"");
+                                    repartidor = new Repartidor(nombre, apellido, email, telefono, "", direccion, "", "", false, entregas, cobertura, imagenes, numero_tarjeta, "");
                                     Intent i = new Intent(RegistroActivity.this, ConfirmarRegistroActivity.class);
                                     i.putExtra("repartidor", repartidor);
-                                    i.putExtra("pass",txt_pass.getText().toString());
+                                    i.putExtra("pass", txt_pass.getText().toString());
                                     startActivity(i);
                                     finish();
                                 }
@@ -149,17 +155,20 @@ public class RegistroActivity extends AppCompatActivity {
 
     }
 
-    private void correo_existente(final String correo_test){
+    private void correo_existente(final String correo_test) {
 
         DatabaseReference reference = database.getReference();
         reference.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Usuario usuario = ds.getValue(Usuario.class);
-                    if(usuario.getCorreo().equals(correo_test)){
-                        Toast.makeText(RegistroActivity.this, "El correo que ingresó se encuentra asociado a otra cuenta", Toast.LENGTH_SHORT).show();
-                        txt_correo.setError("Correo existente");
+                    try {
+                        if (usuario.getCorreo().equals(correo_test)) {
+                            Toast.makeText(RegistroActivity.this, "El correo que ingresó se encuentra asociado a otra cuenta", Toast.LENGTH_SHORT).show();
+                            txt_correo.setError("Correo existente");
+                        }
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -172,10 +181,11 @@ public class RegistroActivity extends AppCompatActivity {
         reference.child("Repartidores").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Repartidor repartidor = ds.getValue(Repartidor.class);
-                    if(repartidor.getCorreo().equals(correo_test)){
-                        Toast.makeText(RegistroActivity.this, "El correo que ingresó se encuentra asociado a una cuenta de cliente", Toast.LENGTH_SHORT).show();}
+                    if (repartidor.getCorreo().equals(correo_test)) {
+                        Toast.makeText(RegistroActivity.this, "El correo que ingresó se encuentra asociado a una cuenta de cliente", Toast.LENGTH_SHORT).show();
+                    }
                     txt_correo.setError("Correo existente");
                 }
             }
@@ -210,38 +220,6 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
-//    public void Inicio_Spinners() {
-//        s_hora_inicio = (Spinner) findViewById(R.id.spinner_hora_inicio_registro);
-//        s_hora_fin = (Spinner) findViewById(R.id.spinner_hora_fin_registro);
-//        ArrayAdapter<CharSequence> horario = ArrayAdapter.createFromResource(this, R.array.horario, android.R.layout.simple_spinner_item);
-//        s_hora_inicio.setAdapter(horario);
-//        s_hora_fin.setAdapter(horario);
-//
-//        s_hora_inicio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                hora_inicio = adapterView.getItemAtPosition(i).toString();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//        s_hora_fin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                hora_fin = adapterView.getItemAtPosition(i).toString();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//
-//
-//    }
 
     public Boolean valida_numero(String numero) {
         if (numero.length() == 10) {
@@ -252,7 +230,7 @@ public class RegistroActivity extends AppCompatActivity {
     }
 
     public void inicio_views() {
-        tarjeta=(EditText)findViewById(R.id.tarjeta);
+        tarjeta = (EditText) findViewById(R.id.tarjeta);
         checkBox = (CheckBox) findViewById(R.id.terminos_y_condiciones_registro);
         txt_nombre = (EditText) findViewById(R.id.nombre_registro);
         txt_apellido = (EditText) findViewById(R.id.apellido_registro);
@@ -262,70 +240,78 @@ public class RegistroActivity extends AppCompatActivity {
         txt_pass_confirm = (EditText) findViewById(R.id.contraseña_registro_confirmada);
         txt_direccion = (EditText) findViewById(R.id.direccion_registro);
         progressDialog = new ProgressDialog(this);
+        terminos_y_licencia = (TextView) findViewById(R.id.terminos_y_licencia);
+        terminos_y_licencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegistroActivity.this, AvisoPrivacidadActivity.class));
+            }
+        });
         circleImageView = (CircleImageView) findViewById(R.id.foto_registro);
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                foto=0;
+                foto = 0;
                 showPictureDialog();
             }
         });
         registrar = (Button) findViewById(R.id.enviar_registro);
-        ine_frontal=(ImageView)findViewById(R.id.id_frontal);
+        ine_frontal = (ImageView) findViewById(R.id.id_frontal);
         ine_frontal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(imagenes.size()>0){
-                    foto=1;
-                    showPictureDialog();
-                }else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistroActivity.this);
-                    builder.setTitle("Datos incompletos").setMessage("Haz click sobre el rostro sonriente para subir una foto de perfil");
-                    builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                foto = 1;
+                showPictureDialog();
 
-                        }
-                    });
-                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(RegistroActivity.this, "Registro incompleto", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    builder.create().show();
-                }
+//                else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistroActivity.this);
+//                    builder.setTitle("Datos incompletos").setMessage("Haz click sobre el rostro sonriente para subir una foto de perfil");
+//                    builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        }
+//                    });
+//                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            Toast.makeText(RegistroActivity.this, "Registro incompleto", Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+//                    builder.create().show();
+//                }
             }
         });
-        ine_trasera=(ImageView)findViewById(R.id.id_trasera);
+        ine_trasera = (ImageView) findViewById(R.id.id_trasera);
         ine_trasera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(imagenes.size()>1){
-                    foto=2;
-                    showPictureDialog();
-                }else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistroActivity.this);
-                    builder.setTitle("Datos incompletos").setMessage("Por favor cargue una foto frontal de su INE");
-                    builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        }
-                    });
-                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(RegistroActivity.this, "Registro incompleto", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    builder.create().show();
-                }
+                foto = 2;
+                showPictureDialog();
+
+//                else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(RegistroActivity.this);
+//                    builder.setTitle("Datos incompletos").setMessage("Por favor cargue una foto frontal de su INE");
+//                    builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        }
+//                    });
+//                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            Toast.makeText(RegistroActivity.this, "Registro incompleto", Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+//                    builder.create().show();
+//                }
             }
         });
     }
@@ -391,16 +377,49 @@ public class RegistroActivity extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
 
                                 url_foto = uri.toString();
-                                imagenes.add(url_foto);
+
                                 progressDialog.dismiss();
-                                if(foto==0){
+                                if (foto == 0) {
+                                    ArrayList<String> temp = new ArrayList<>();
+                                    temp.addAll(imagenes);
+                                    imagenes.clear();
+                                    imagenes.add(url_foto);
+
+                                    imagenes.add(temp.get(1));
+
+                                    imagenes.add(temp.get(2));
+
+
+//                                    imagenes.get(0).replace(imagenes.get(0),url_foto);
                                     Glide.with(RegistroActivity.this).load(imagenes.get(0)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(circleImageView);
                                     Toast.makeText(RegistroActivity.this, "Foto subidda con exito", Toast.LENGTH_SHORT).show();
                                 }
-                                if(foto==1){
+                                if (foto == 1) {
+                                    ArrayList<String> temp = new ArrayList<>();
+                                    temp.addAll(imagenes);
+                                    imagenes.clear();
+                                    imagenes.add(temp.get(0));
+
+                                    imagenes.add(url_foto);
+
+                                    imagenes.add(temp.get(2));
+
+
+                                    //imagenes.get(1).replace(imagenes.get(1),url_foto);
                                     Glide.with(RegistroActivity.this).load(imagenes.get(1)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(ine_frontal);
                                     Toast.makeText(RegistroActivity.this, "Foto subidda con exito", Toast.LENGTH_SHORT).show();
-                                }else if(foto==2){
+                                } else if (foto == 2) {
+                                    ArrayList<String> temp = new ArrayList<>();
+                                    temp.addAll(imagenes);
+                                    imagenes.clear();
+
+                                    imagenes.add(temp.get(0));
+
+                                    imagenes.add(temp.get(1));
+
+                                    imagenes.add(url_foto);
+
+                                    //imagenes.get(2).replace(imagenes.get(2),url_foto);
                                     Glide.with(RegistroActivity.this).load(imagenes.get(2)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(ine_trasera);
                                     Toast.makeText(RegistroActivity.this, "Foto subidda con exito", Toast.LENGTH_SHORT).show();
                                 }
@@ -443,14 +462,14 @@ public class RegistroActivity extends AppCompatActivity {
                             url_foto = uri.toString();
                             imagenes.add(url_foto);
                             progressDialog.dismiss();
-                            if(foto==0){
+                            if (foto == 0) {
                                 Glide.with(RegistroActivity.this).load(imagenes.get(0)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(circleImageView);
                                 Toast.makeText(RegistroActivity.this, "Foto subidda con exito", Toast.LENGTH_SHORT).show();
                             }
-                            if(foto==1){
+                            if (foto == 1) {
                                 Glide.with(RegistroActivity.this).load(imagenes.get(1)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(ine_frontal);
                                 Toast.makeText(RegistroActivity.this, "Foto subidda con exito", Toast.LENGTH_SHORT).show();
-                            }else if(foto==2){
+                            } else if (foto == 2) {
                                 Glide.with(RegistroActivity.this).load(imagenes.get(2)).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(ine_trasera);
                                 Toast.makeText(RegistroActivity.this, "Foto subidda con exito", Toast.LENGTH_SHORT).show();
                             }

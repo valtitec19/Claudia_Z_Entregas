@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/colorAccent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,6 +10,8 @@
     tools:context=".AvisoPrivacidadActivity">
 
     <TextView
+
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +26,7 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
        <TextView
+           android:textColor="@color/white"
            android:padding="5dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -42,7 +46,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/botones"
         android:text="Aceptar"
         android:onClick="regresar_registro"
         android:textColor="@android:color/white" />

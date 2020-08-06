@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class FinalizarPedido extends AppCompatActivity {
     private FirebaseDatabase database;
@@ -110,7 +111,11 @@ public class FinalizarPedido extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Pedidos pedidos=dataSnapshot.getValue(Pedidos.class);
-                producto.setText(pedidos.getNombre());
+                try {
+                    producto.setText(pedidos.getNombre());
+                }catch (Exception e){
+
+                }
                 descripcon.setText(pedidos.getDescripcion());
                 lugar.setText(pedidos.getDireccion_entrega());
                 fecha.setText(pedidos.getHora_entrega());
@@ -131,8 +136,12 @@ public class FinalizarPedido extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Usuario u=snapshot.getValue(Usuario.class);
-                    if(u.getId().equals(recibido.getUsuario_id())){
-                        usuario.setText("Pedido para "+u.getNombre()+" "+u.getApellidos());
+                    try {
+                        if(u.getId().equals(recibido.getUsuario_id())){
+                            usuario.setText("Pedido para "+u.getNombre()+" "+u.getApellidos());
+                        }
+                    }catch (Exception e){
+
                     }
                 }
             }
@@ -160,7 +169,11 @@ public class FinalizarPedido extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             Usuario usuario = snapshot.getValue(Usuario.class);
-                            enviar_recordatorio(usuario.getToken(),"Pedido cancelado",recibido.getNombre()+" ponte en contacto a traves de nuestras redes sociales ",recibido.getFoto());
+                            try {
+                                enviar_recordatorio(usuario.getToken(),"Pedido cancelado",recibido.getNombre()+" ponte en contacto a traves de nuestras redes sociales ",recibido.getFoto());
+                            }catch (Exception e){
+
+                            }
                         }
 
                         @Override

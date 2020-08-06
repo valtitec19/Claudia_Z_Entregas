@@ -106,21 +106,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="categoria"/>
-                <TextView
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:singleLine="true"
-                    android:scrollHorizontally="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit ="marquee_forever"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:id="@+id/estado_del_item_2"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Estado 2"/>
+
             </LinearLayout>
+
+            <TextView
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:id="@+id/estado_del_item_2"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estado 2"/>
 
             <TextView
                 android:focusable="true"

@@ -108,12 +108,16 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             for(DataSnapshot ds : dataSnapshot.getChildren()){
                                                 Usuario usuario=ds.getValue(Usuario.class);
-                                                if(usuario.getCorreo().equals(txt_correo.getText().toString())){
-                                                    Toast.makeText(LoginActivity.this, "Este correo pertenece a una cuenta de Cliente", Toast.LENGTH_SHORT).show();
-                                                    FirebaseAuth.getInstance().signOut();
-                                                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-                                                }else{
-                                                    nextActivity();
+                                                try {
+                                                    if(usuario.getCorreo().equals(txt_correo.getText().toString())){
+                                                        Toast.makeText(LoginActivity.this, "Este correo pertenece a una cuenta de Cliente", Toast.LENGTH_SHORT).show();
+                                                        FirebaseAuth.getInstance().signOut();
+                                                        startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                                                    }else{
+                                                        nextActivity();
+                                                    }
+                                                }catch (Exception e){
+
                                                 }
                                             }
                                         }

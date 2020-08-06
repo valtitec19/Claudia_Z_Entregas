@@ -158,28 +158,32 @@ public class NavDrawerActivity extends AppCompatActivity {
                public void onDataChange(@NonNull DataSnapshot snapshot) {
                    for(DataSnapshot da  : snapshot.getChildren()){
                        final Pedidos pedidos = da.getValue(Pedidos.class);
-                       if(pedidos.getRepartidor_id().equals(currentUser.getUid())){
-                           DatabaseReference reference1=database.getReference("Usuarios");
-                           reference1.addListenerForSingleValueEvent(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                   for (DataSnapshot ds : snapshot.getChildren()){
-                                       Usuario usuario = ds.getValue(Usuario.class);
-                                       if(pedidos.getUsuario_id().equals(usuario.getId())){
+                       try {
+                           if(pedidos.getRepartidor_id().equals(currentUser.getUid())){
+                               DatabaseReference reference1=database.getReference("Usuarios");
+                               reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                   @Override
+                                   public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                       for (DataSnapshot ds : snapshot.getChildren()){
+                                           Usuario usuario = ds.getValue(Usuario.class);
+                                           if(pedidos.getUsuario_id().equals(usuario.getId())){
 
-                                           if(pedidos.getEstado().equals("Pago pendiente (En efectivo)") || pedidos.getEstado().equals("Pagado")){
-                                               Log.e("Estado ", "Detectado" );
-                                               enviar_recordatorio(usuario.getToken(),"Tienes una entrega proxima",pedidos.getDireccion_entrega()+" "+pedidos.getDescripcion(),pedidos.getFoto());
+                                               if(pedidos.getEstado().equals("Pago pendiente (En efectivo)") || pedidos.getEstado().equals("Pagado")){
+                                                   Log.e("Estado ", "Detectado" );
+                                                   enviar_recordatorio(usuario.getToken(),"Tienes una entrega proxima",pedidos.getDireccion_entrega()+" "+pedidos.getDescripcion(),pedidos.getFoto());
+                                               }
                                            }
                                        }
                                    }
-                               }
 
-                               @Override
-                               public void onCancelled(@NonNull DatabaseError error) {
+                                   @Override
+                                   public void onCancelled(@NonNull DatabaseError error) {
 
-                               }
-                           });
+                                   }
+                               });
+                           }
+                       }catch (Exception e){
+
                        }
                    }
                }

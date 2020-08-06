@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.clauzon.clauzentregas.Clases.Repartidor;
@@ -21,8 +26,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfirmarRegistroActivity extends AppCompatActivity {
 
@@ -60,7 +73,8 @@ public class ConfirmarRegistroActivity extends AppCompatActivity {
                                                 id=currenUser.getUid();
                                                 repartidor.setId(id);
                                                 DatabaseReference referenceRepartidores= database.getReference("Repartidores/"+id);
-                                                referenceRepartidores.setValue(repartidor);
+                                                referenceRepartidores.setValue(repartidor);;
+                                                recuperar_token_dispositivo();
                                                 Toast.makeText(ConfirmarRegistroActivity.this, "Verifica tu correo en tu bandeja de entrada", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(ConfirmarRegistroActivity.this,ActivacionActivity.class));
                                                 finish();
@@ -77,6 +91,63 @@ public class ConfirmarRegistroActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    private void recuperar_token_dispositivo() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        enviar_notificacion(token,"Tus datos estan siendo revisados","Cuanto seas autorizado podras comenzar a realizar entregas",repartidor.getImagenes().get(0));
+                    }
+                });
+
+    }
+
+
+    private void enviar_notificacion(String token,String titulo, String detalle,String imagen) {
+        RequestQueue mRequestQue = Volley.newRequestQueue(this);
+
+        JSONObject json = new JSONObject();
+        try {
+
+            json.put("to", token);
+
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("titulo", titulo);
+            notificationObj.put("detalle", detalle);
+            notificationObj.put("imagen",imagen);
+
+
+
+            //replace notification with data when went send data
+            json.put("data", notificationObj);
+
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    json,null,null) {
+
+
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAAE3HNDFU:APA91bEmPKbwtdaQIrU9g2GmxBEwy7zqHzdwG-L3I7o6HzrKhJ5BupTBTqhN67ytbObOv_NUILcDMaG-HwCLi2tEFKDwOWShs14ZOGpWZOh2DJNhxwjAQIfPtWgn7sxWuDR9VfT4uPQW");
+                    return header;
+                }
+            };
+
+
+            mRequestQue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void inicia_views(Repartidor repartidor){

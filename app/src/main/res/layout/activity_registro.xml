@@ -252,7 +252,7 @@
                     <TextView
                         android:padding="15dp"
                         android:textColor="@color/white"
-                        android:onClick="licencia"
+                        android:id="@+id/terminos_y_licencia"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
